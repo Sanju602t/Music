@@ -177,6 +177,7 @@ import com.dd3boh.outertune.constants.SlimNavBarKey
 import com.dd3boh.outertune.constants.UpdateAvailableKey
 import com.dd3boh.outertune.db.MusicDatabase
 import com.dd3boh.outertune.db.entities.SearchHistory
+import com.dd3boh.outertune.db.entities.Song
 import com.dd3boh.outertune.extensions.tabMode
 import com.dd3boh.outertune.playback.DownloadUtil
 import com.dd3boh.outertune.playback.MediaControllerViewModel
@@ -186,6 +187,7 @@ import com.dd3boh.outertune.ui.component.SearchBar
 import com.dd3boh.outertune.ui.component.button.IconButton
 import com.dd3boh.outertune.ui.component.rememberBottomSheetState
 import com.dd3boh.outertune.ui.component.shimmer.ShimmerTheme
+import com.dd3boh.outertune.ui.screens.ImportM3uScreen
 import com.dd3boh.outertune.ui.menu.BottomSheetMenu
 import com.dd3boh.outertune.ui.menu.MenuState
 import com.dd3boh.outertune.ui.menu.YouTubeSongMenu
@@ -718,9 +720,9 @@ class MainActivity : ComponentActivity() {
                     }
 
                     val shouldShowNavigationBar = remember(navBackStackEntry, searchActive, shouldHideNavAndPlayer) {
-                        (!useRail || tabMode) && !searchActive && !shouldHideNavAndPlayer && navBackStackEntry?.destination?.route?.startsWith(
-                            "settings"
-                        ) != true
+                        (!useRail || tabMode) && !searchActive && !shouldHideNavAndPlayer && navBackStackEntry?.destination?.route?.let {
+                         it.startsWith("settings") || it.startsWith("library_manager")
+                        } != true
                     }
 
                     val shouldShowNavigationRail = remember(navBackStackEntry, searchActive, shouldHideNavAndPlayer) {
@@ -968,6 +970,12 @@ class MainActivity : ComponentActivity() {
                                     }
                                     composable("account") {
                                         AccountScreen(navController, scrollBehavior)
+                                    }
+                                    composable("library_manager/importM3u") {
+                                        ImportM3uScreen(
+                                            navController = navController,
+                                            scrollBehavior = scrollBehavior,
+                                        )
                                     }
 
                                     composable(
