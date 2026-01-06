@@ -6,7 +6,7 @@ on:
       - canary
   pull_request:
     branches:
-      - '**'
+      - canary
 
 jobs:
   build:
